@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>黎宏枢 · 个人简历</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2b5e7a;
+            --secondary-color: #2b7a62;
+            --bg-gradient: linear-gradient(135deg, #1f3b4c 0%, #2b5e7a 100%);
+            --text-main: #2c3e4e;
+            --text-light: #6a8aa0;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'PingFang SC', sans-serif;
+            background: #f8fafc;
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            background: var(--bg-gradient);
+            color: white;
+            padding: 60px 20px 100px;
+            text-align: center;
+        }
+
+        .avatar-container {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .avatar-container:hover { transform: scale(1.1) rotate(5deg); }
+
+        .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+
+        .header h1 { font-size: 2.5rem; margin-bottom: 10px; letter-spacing: -1px; }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .contact-info span {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 15px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* ===== Container ===== */
+        .container {
+            max-width: 850px;
+            margin: -60px auto 50px;
+            padding: 0 20px;
+        }
+
+        .section {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+
+        /* JS 激活类 */
+        .section.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 5px solid var(--primary-color);
+            padding-left: 15px;
+        }
+
+        /* ===== 教育背景 (置前) ===== */
+        .edu-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .edu-info h3 { font-size: 1.15rem; color: #1a2c3e; }
+        .edu-tag {
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+
+        /* ===== 个人评价 (Typewriter Effect) ===== */
+        .eval-text {
+            font-size: 1.05rem;
+            color: #4a5568;
+            min-height: 3em;
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 12px;
+            border-right: 3px solid var(--primary-color);
+        }
+
+        /* ===== 技能条动画 ===== */
+        .skill-item { margin-bottom: 15px; }
+        .skill-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 6px; display: block; }
+        .skill-bar { height: 10px; background: #e2e8f0; border-radius: 5px; overflow: hidden; }
+        .skill-fill {
+            height: 100%;
+            width: 0; /* 初始宽度为0，由JS控制 */
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 5px;
+            transition: width 1.5s cubic-bezier(0.1, 0.42, 0.41, 1);
+        }
+
+        /* ===== 经历项 ===== */
+        .job-box { margin-bottom: 25px; position: relative; padding-left: 20px; border-left: 2px dashed #cbd5e1; }
+        .job-title { font-weight: 700; color: #1e293b; display: flex; justify-content: space-between; }
+        .job-desc { list-style: none; margin-top: 10px; font-size: 0.95rem; }
+        .job-desc li { margin-bottom: 6px; color: #475569; }
+        .job-desc li::before { content: "▹ "; color: var(--secondary-color); }
+
+        .footer { text-align: center; padding: 30px; color: var(--text-light); font-size: 0.8rem; }
+
+        @media (max-width: 600px) {
+            .edu-box { flex-direction: column; }
+            .header h1 { font-size: 2rem; }
+        }
+
+        .skill-tag {
+    display: inline-block;
+    background: #f1f5f9;
+    color: #2b5e7a;
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 6px;
+    margin-right: 10px;
+    border: 1px solid #e2e8f0;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* 强调文字颜色 */
+.skills-detail strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+/* 悬停效果：增加阅读反馈 */
+.skills-detail li {
+    transition: all 0.2s ease;
+    padding: 5px;
+    border-radius: 8px;
+}
+
+.skills-detail li:hover {
+    background: #f8fafc;
+    transform: translateX(5px);
+}
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="avatar-container">
+            <img src="img/1234.jpg"头像" class="avatar-img">
+        </div>
+        <h1>黎宏枢</h1>
+        <p style="opacity: 0.9; font-weight: 300;">求职期望：项目实施/运维工程师 </p>
+        <div class="contact-info">
+            <span>📞 18707874091</span>
+            <span>✉️ 1412396354@qq.com</span>
+            <span>📍 广西 · 钦州</span>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section class="section">
+            <h2>🎓 教育背景</h2>
+            <div class="edu-box">
+                <div class="edu-info">
+                    <h3>桂林电子科技大学</h3>
+                    <div class="edu-tag">网络工程 · 本科 (前 30%)</div>
+                    <p style="font-size: 0.9rem; color: #64748b;">主修：大数据分析应用与时间、ETL技术、Linux操作系统、Python应用开发，java应用开发</p>
+                </div>
+                <div style="color: #94a3b8; font-size: 0.9rem; font-weight: 600;">2021.09 - 2025.07</div>
+            </div>
+        </section>
+
+      
+
+       <section class="section" id="skills-section">
+    <h2>🛠️ 专业技能</h2>
+    
+ <div class="skills-detail" style="margin-bottom: 30px;">
+        <ul class="job-desc" style="border-left: none; padding-left: 0; list-style: none;">
+            <li style="margin-bottom: 15px;">
+                <span class="skill-tag">运维基础设施</span>
+                <p style="display: inline; color: #475569;">熟练 Linux 日常运维，熟悉 <strong>MySQL、Docker、Nginx、Redis</strong> 等中间件部署；熟悉主流云平台（阿里云、腾讯云、移动云）ESC 环境配置。</p>
+            </li>
+            <li style="margin-bottom: 15px;">
+                <span class="skill-tag">Python & 自动化</span>
+                <p style="display: inline; color: #475569;">熟练使用 <strong>Pandas,kettel,excel</strong> 进行数据清洗与建模；具备独立开发自动化运维脚本与效率工具的能力。</p>
+            </li>
+            <li style="margin-bottom: 15px;">
+                <span class="skill-tag">数据分析与 BI</span>
+                <p style="display: inline; color: #475569;">熟悉 Excel 常用函数及数据透视；掌握 <strong>MySQL聚合函数和增删改查</strong>；熟悉 PowerBI、FineReport 等数据分析和可视化工具</p>
+            </li>
+            <li style="margin-bottom: 15px;">
+                <span class="skill-tag">前端与 AI 协同</span>
+                <p style="display: inline; color: #475569;">具备 HTML5、Bootstrap 及 JS 开发基础； <strong>熟悉国内外各种主流ai工具的使用</strong>，熟练使用ai高效完成文案、脚本及数据报表生成和其他工作项。</p>
+            </li>
+            <li style="margin-bottom: 15px;">
+                <span class="skill-tag">语言与沟通</span>
+                <p style="display: inline; color: #475569;">英语四级 (CET-4)，具备外企文档阅读能力；普通话流利，粤语可日常交流。</p>
+            </li>
+        </ul>
+    </div>
+
+    <div class="skills-visual" style="border-top: 1px solid #edf2f7; padding-top: 25px;">
+        <div class="skill-item">
+            <span class="skill-name">Linux 运维与云环境配置</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="62%"></div></div>
+        </div>
+        <div class="skill-item">
+            <span class="skill-name">Python 数据分析与自动化</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="65%"></div></div>
+        </div>
+        <div class="skill-item">
+            <span class="skill-name">数据可视化与办公自动化</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="55%"></div></div>
+        </div>
+        <div class="skill-item">
+            <span class="skill-name">AI 工具集成与应用</span>
+            <div class="skill-bar"><div class="skill-fill" data-width="70%"></div></div>
+        </div>
+    </div>
+</section>
+        <section class="section">
+            <h2>💼 工作/项目经历</h2>
+            
+            <div class="job-box">
+                <div class="job-title">
+                    <span>无人驾驶系统运维员</span>
+                    <span style="font-size: 0.85rem; color: #94a3b8;">2025.05 - 2025.11</span>
+                </div>
+                <div style="color: var(--secondary-color); font-size: 0.9rem;">广东宏大爆破工程集团有限公司</div>
+                <ul class="job-desc">
+                    <li><span class="skill-tag">无人驾驶系统运维</span>负责矿区/工地无人驾驶车队的日常巡检，车辆测试和远程调度、操作监控与操作系统故障初步排查和问题日志提取并分析和系统更新与优化，保障系统在复杂环境下的稳定运行。</li>
+                    <li><span class="skill-tag">设备维护与管理</span>执行无人驾驶车辆及关联硬件设备的定期点检、维护巡检工作，确保设备完好率，支持现场高效作业。</li>
+                    <li><span class="skill-tag">会议组织与数据分析</span>定期组织项目复盘会议，精准记录会议纪要并跟踪行动项落实和统计生产数据并形成分析报告，有效推动问题闭环与项目持续优化，为领导提供决策提供建议</li>
+                    <li><span class="skill-tag">文档编写</span>负责部门无人驾驶ppt报告和生产技术文档的资料收集和文档编撰存档</li>
+                </ul>
+            </div>
+
+            <div class="job-box">
+                <div class="job-title">
+                    <span>泛微 OA 项目实施</span>
+                    <span style="font-size: 0.85rem; color: #94a3b8;">2024.10 - 2025.04</span>
+                </div>
+                <div style="color: var(--secondary-color); font-size: 0.9rem;">广西如安信息科技</div>
+                <ul class="job-desc">
+                   
+                    <li> <span class="skill-tag">项目实施</span> 参与钦州中马产业园、玉林红十字医院2个泛微OA项目的实施，协助系统部署、运动环境配置、流程配置、用户培训等全环节工作。</li>
+                    <li><span class="skill-tag">问题闭环</span>参与对接客户会议，累计处理20+条实施及运维问题，建立问题跟踪台账，确保所有问题100%闭环，保障项目顺利验收。</li>
+                    <li><span class="skill-tag">文档编写</span> 参与编制《需求确认书》《操作手册》《FAQ》等10余份项目文档的编写，有效支撑用户培训与后期运维。</li>
+                    <li><span class="skill-tag">适应能力</span>可以 适应长期出差驻场工作模式，具备良好的抗压能力和客户沟通能力。</li>
+                </ul>
+            </div>
+   
+        </section>
+     <section class="section">
+            <h2>📜 技能证书</h2>
+            <div class="cert-grid">
+                <div class="cert-card cert-highlight">
+            
+                    <div class="cert-info">
+                       <a href="img/RHCSA.png"> <h3>红帽认证系统管理员 (RHCSA)</h3></a>
+                        <p>获证时间：2024.10</p>
+                    </div>
+                </div>
+                <div class="cert-card">
+                 
+                    <div class="cert-info">
+                        <h3>中华人民共和国机动车驾驶证 (C1)</h3>
+                        <p>获证时间：2024.05</p>
+                    </div>
+                </div>
+
+                <div class="cert-card">
+                  
+                    <div class="cert-info">
+                       <a href="img/HuaWei.png"> <h3>HarmonyOS应用开发者高级认证</h3></a>
+                        <p>获证时间：2024.06</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+              <section class="section">
+            <h2>🌟 个人评价</h2>
+            <div id="typewriter" class="eval-text"></div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 黎宏枢 · 基于 HTML/CSS/JS 构建</p>
+    </footer>
+
+    <script>
+        // 1. 自动进入动画 (Intersection Observer)
+        const observerOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    // 如果是技能区，触发进度条动画
+                    if (entry.target.id === 'skills-section') {
+                        animateSkills();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // 2. 技能条加载动画
+        function animateSkills() {
+            document.querySelectorAll('.skill-fill').forEach(fill => {
+                fill.style.width = fill.getAttribute('data-width');
+            });
+        }
+
+        // 3. 打字机效果
+        const text = "热爱技术探索，在稳中求进中追求进步。具备扎实的 Linux 运维与 Python 数据处理功底，乐于挑战复杂系统的运维难题。追求知行合一，期待在岗位上创造实际价值。";
+        let index = 0;
+        function typeWriter() {
+            if (index < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 50);
+            } else {
+                document.getElementById("typewriter").style.borderRight = "none";
+            }
+        }
+
+        // 延迟触发打字机效果，等待首屏动画加载
+        setTimeout(typeWriter, 1000);
+    </script>
+</body>
+</html>
